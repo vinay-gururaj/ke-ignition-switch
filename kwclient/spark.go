@@ -1330,23 +1330,22 @@ func createJourneyMap(projectId string, name string) {
 	println(body)
 }
 
-// func (c *Client) CreateProject(name string, description string, sessionId string, csrfToken string, host string) string {
-func (c *Client) CreateProject(kwProject KwProject) string {
+func CreateProject(name string, description string, sessionId string, csrfToken string, host string) string {
 
-	println("Creating new project " + kwProject.Name)
-	murl := c.HostURL + "/api/0/projects"
+	println("Creating new project " + name)
+	murl := host + "/api/0/projects"
 
-	projBody := strings.NewReader("{\"name\":\"" + kwProject.Name + "\",\"description\":\"" + kwProject.Description + "\",\"invalidInput\":[],\"selected\":{\"id\":\"1\",\"name\":\"Kitewheel\",\"hierarchy\":{\"organizationId\":\"1\",\"parents\":[],\"allDescendents\":[\"2124992990718985395\",\"1835831493516067943\",\"2322145224303838439\",\"2322736559620621545\",\"2613361665051198744\",\"2621964777013904666\",\"1835831154943460452\",\"1835831406266156134\",\"1835831655693026408\",\"1817405784846238814\",\"2510596089799771404\",\"2181460569423348927\",\"1835831301425333349\",\"2550829615333508370\",\"2809147778456880420\",\"1683579969785037891\",\"2600849731571680534\",\"2809147866595984677\",\"2809066276956144931\",\"1703186918570722374\",\"12\",\"2488028352359695624\",\"1852370781288268907\",\"2886747964884124970\",\"1816815216441164888\",\"2329800296575796458\",\"2283395180952290523\",\"2887399165124412715\",\"2342197734137660652\",\"3009768281960613083\",\"2996949223859029209\",\"2994054605316293848\",\"2550299151455749393\",\"2074209544312980637\",\"2796707919771469090\",\"1969339376450143365\",\"2733839075831186718\",\"2401011735247979775\",\"2284497976770430172\",\"2227141035505484998\",\"2116211057591583920\",\"2063393085278127258\",\"2774326590975247648\",\"2056157604056401047\",\"2896731500944819500\",\"2861956944996861224\",\"2235836434160288970\",\"2719311071516034333\",\"2616265122947007769\",\"2547285480680981774\",\"2388025253407229179\",\"2322145071706670310\",\"2517107438746862861\",\"2360512674527184111\",\"2829954022151030054\",\"2866433638868714793\",\"2937939208460829911\",\"2906359125514388781\",\"2654701749826225435\",\"2014696495852291215\",\"2263435265471153362\",\"2998946819976725722\",\"1835831776010830953\"],\"directDescendents\":[\"1703186918570722374\",\"2263435265471153362\",\"1817405784846238814\",\"12\",\"2488028352359695624\",\"2283395180952290523\",\"2510596089799771404\",\"2550829615333508370\",\"1683579969785037891\",\"2600849731571680534\",\"1852370781288268907\",\"2886747964884124970\",\"1816815216441164888\",\"2342197734137660652\",\"2550299151455749393\",\"2074209544312980637\",\"1969339376450143365\",\"2401011735247979775\",\"2284497976770430172\",\"2227141035505484998\",\"2116211057591583920\",\"2063393085278127258\",\"2056157604056401047\",\"2861956944996861224\",\"2719311071516034333\",\"2547285480680981774\",\"2829954022151030054\",\"2866433638868714793\",\"2937939208460829911\",\"2906359125514388781\",\"2654701749826225435\",\"2998946819976725722\"],\"parentNames\":[]}},\"organizationId\":\"1\"}")
+	projBody := strings.NewReader("{\"name\":\"" + name + "\",\"description\":\"" + description + "\",\"invalidInput\":[],\"selected\":{\"id\":\"1\",\"name\":\"Kitewheel\",\"hierarchy\":{\"organizationId\":\"1\",\"parents\":[],\"allDescendents\":[\"2124992990718985395\",\"1835831493516067943\",\"2322145224303838439\",\"2322736559620621545\",\"2613361665051198744\",\"2621964777013904666\",\"1835831154943460452\",\"1835831406266156134\",\"1835831655693026408\",\"1817405784846238814\",\"2510596089799771404\",\"2181460569423348927\",\"1835831301425333349\",\"2550829615333508370\",\"2809147778456880420\",\"1683579969785037891\",\"2600849731571680534\",\"2809147866595984677\",\"2809066276956144931\",\"1703186918570722374\",\"12\",\"2488028352359695624\",\"1852370781288268907\",\"2886747964884124970\",\"1816815216441164888\",\"2329800296575796458\",\"2283395180952290523\",\"2887399165124412715\",\"2342197734137660652\",\"3009768281960613083\",\"2996949223859029209\",\"2994054605316293848\",\"2550299151455749393\",\"2074209544312980637\",\"2796707919771469090\",\"1969339376450143365\",\"2733839075831186718\",\"2401011735247979775\",\"2284497976770430172\",\"2227141035505484998\",\"2116211057591583920\",\"2063393085278127258\",\"2774326590975247648\",\"2056157604056401047\",\"2896731500944819500\",\"2861956944996861224\",\"2235836434160288970\",\"2719311071516034333\",\"2616265122947007769\",\"2547285480680981774\",\"2388025253407229179\",\"2322145071706670310\",\"2517107438746862861\",\"2360512674527184111\",\"2829954022151030054\",\"2866433638868714793\",\"2937939208460829911\",\"2906359125514388781\",\"2654701749826225435\",\"2014696495852291215\",\"2263435265471153362\",\"2998946819976725722\",\"1835831776010830953\"],\"directDescendents\":[\"1703186918570722374\",\"2263435265471153362\",\"1817405784846238814\",\"12\",\"2488028352359695624\",\"2283395180952290523\",\"2510596089799771404\",\"2550829615333508370\",\"1683579969785037891\",\"2600849731571680534\",\"1852370781288268907\",\"2886747964884124970\",\"1816815216441164888\",\"2342197734137660652\",\"2550299151455749393\",\"2074209544312980637\",\"1969339376450143365\",\"2401011735247979775\",\"2284497976770430172\",\"2227141035505484998\",\"2116211057591583920\",\"2063393085278127258\",\"2056157604056401047\",\"2861956944996861224\",\"2719311071516034333\",\"2547285480680981774\",\"2829954022151030054\",\"2866433638868714793\",\"2937939208460829911\",\"2906359125514388781\",\"2654701749826225435\",\"2998946819976725722\"],\"parentNames\":[]}},\"organizationId\":\"1\"}")
 
 	req, _ := http.NewRequest("POST", murl, projBody)
 
 	req.Header.Add("accept", "application/json")
 	req.Header.Add("content-type", "application/json")
-	req.Header.Add("csrf-token", c.CsrfToken)
-	req.Header.Add("origin", c.CsrfToken)
+	req.Header.Add("csrf-token", csrfToken)
+	req.Header.Add("origin", csrfToken)
 
 	req.Header.Add("authorization", "Bearer eyJtaXJvLm9yaWdpbiI6ImV1MDEifQ_lhUmrwicThOlAWFmhFbYipOFV-s")
-	req.Header.Add("cookie", "connect.sid="+c.SessionId)
+	req.Header.Add("cookie", "connect.sid="+sessionId)
 	res, _ := http.DefaultClient.Do(req)
 
 	defer res.Body.Close()
@@ -1356,6 +1355,7 @@ func (c *Client) CreateProject(kwProject KwProject) string {
 	json.Unmarshal([]byte(body), &projectId)
 
 	println(body)
+	println(projectId.Id)
 	return projectId.Id
 }
 
@@ -1394,7 +1394,7 @@ func cloneConnection(kwc KWConnections, projectId string, sessionId string, csrf
 
 }
 
-func createConnection(name string, key string, secret string, readQueue string, writeQueue string, projectId string, sessionId string, csrfToken string, host string) {
+func CreateConnection(name string, key string, secret string, readQueue string, writeQueue string, projectId string, sessionId string, csrfToken string, host string) {
 
 	println("Creating new SQS connection")
 	murl := host + "/api/0/projects/" + projectId + "/connections"
@@ -1418,7 +1418,7 @@ func createConnection(name string, key string, secret string, readQueue string, 
 	json.Unmarshal([]byte(body), &id)
 
 	// https://hub-us.kitewheel.com/api/0/connectors/3024357318918669839
-	createConnectionDetails("xponent SQS", key, secret, readQueue, writeQueue, id.Connectors[0].Id, sessionId, csrfToken, host)
+	createConnectionDetails(name, key, secret, readQueue, writeQueue, id.Connectors[0].Id, sessionId, csrfToken, host)
 
 	//println(body)
 }
@@ -1428,7 +1428,7 @@ func createConnectionDetails(name string, key string, secret string, readQueue s
 	println("Setting SQS details")
 	murl := host + "/api/0/connectors/" + connectorId
 
-	projBody := strings.NewReader("{\"readQueue\":\"" + name + "\",\"writeQueue\":\"" + writeQueue + "\",\"awsAccessKeyId\":\"" + key + "\",\"awsSecretAccessKey\":\"" + secret + "\",\"awsRegion\":\"us-east-1\",\"queueType\":\"sqs\"}")
+	projBody := strings.NewReader("{\"readQueue\":\"" + readQueue + "\",\"writeQueue\":\"" + writeQueue + "\",\"awsAccessKeyId\":\"" + key + "\",\"awsSecretAccessKey\":\"" + secret + "\",\"awsRegion\":\"us-east-1\",\"queueType\":\"sqs\"}")
 
 	req, _ := http.NewRequest("PUT", murl, projBody)
 
