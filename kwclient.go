@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -8,11 +9,15 @@ import (
 	"net/http"
 	"time"
 	"xdk/kwclient"
+
+	"github.com/gorilla/mux"
 )
 
 // HostURL - Default Hashicups URL
-const HostURL string = "http://localhost:8001"
-const KWHubHost string = "https://hub.csgjourney.com"
+const (
+	HostURL     = "http://localhost:8001"
+	KWHubHostV1 = "https://hub.csgjourney.com"
+)
 
 // Client -
 type Client struct {
@@ -23,50 +28,46 @@ type Client struct {
 }
 
 type xpProject struct {
-	Name        string
-	Description string
-	SessionId   string
-	CsrfToken   string
-	Host        string
+	Name        string `json:"name"`
+	Description string `json:"description"`
 }
 
 type sqsConnection struct {
-	Name       string
-	Key        string
-	Secret     string
-	ReadQueue  string
-	WriteQueue string
-	ProjectId  string
-	SessionId  string
-	CsrfToken  string
-	Host       string
+	Name       string `json:"name"`
+	Key        string `json:"key"`
+	Secret     string `json:"secret"`
+	ReadQueue  string `json:"readQueue"`
+	WriteQueue string `json:"writeQueue"`
+	ProjectId  string `json:"projectId"`
 }
 
 func homePage(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
 	fmt.Fprintf(w, "Welcome to the HomePage!")
-	fmt.Println("Endpoint Hit: homePage")
 }
 
 func handleRequests() {
-	http.HandleFunc("/", homePage)
-	http.HandleFunc("/createkwProject", createKWProject)
-	http.HandleFunc("/createSQSConnection", createSQSConnection)
-	log.Fatal(http.ListenAndServe(":8001", nil))
+	router := mux.NewRouter()
+
+	router.HandleFunc("/", homePage).Methods("GET")
+	router.HandleFunc("/createkwProject", createKWProject).Methods("POST")
+	router.HandleFunc("/createSQSConnection", createSQSConnection).Methods("POST")
+	log.Fatal(http.ListenAndServe(":8001", router))
 }
 
 func createKWProject(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
 	var newXPProject xpProject
 	json.NewDecoder(r.Body).Decode(&newXPProject)
-	newXPProject.Host = KWHubHost
-	projectId := kwclient.CreateProject(newXPProject.Name, newXPProject.Description, newXPProject.SessionId, newXPProject.CsrfToken, newXPProject.Host)
-	w.Write([]byte(projectId))
+	projectId := kwclient.CreateProject(newXPProject.Name, newXPProject.Description, r.Header.Get("SessionId"), r.Header.Get("CsrfToken"), KWHubHostV1)
+	json.NewEncoder(w).Encode(projectId)
 }
 
 func createSQSConnection(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
 	var newSQSConnection sqsConnection
 	json.NewDecoder(r.Body).Decode(&newSQSConnection)
-	newSQSConnection.Host = KWHubHost
-	kwclient.CreateConnection(newSQSConnection.Name, newSQSConnection.Key, newSQSConnection.Secret, newSQSConnection.ReadQueue, newSQSConnection.WriteQueue, newSQSConnection.ProjectId, newSQSConnection.SessionId, newSQSConnection.CsrfToken, newSQSConnection.Host)
+	kwclient.CreateConnection(newSQSConnection.Name, newSQSConnection.Key, newSQSConnection.Secret, newSQSConnection.ReadQueue, newSQSConnection.WriteQueue, newSQSConnection.ProjectId, r.Header.Get("SessionId"), r.Header.Get("CsrfToken"), KWHubHostV1)
 }
 
 func main() {
@@ -91,7 +92,7 @@ func NewClient(host *string) (*Client, error) {
 	return &c, nil
 }
 
-func (c *Client) doRequest(req *http.Request) ([]byte, error) {
+func (c *Client) doRequest(ctx context.Context, req *http.Request) ([]byte, error) {
 
 	res, err := c.HTTPClient.Do(req)
 	if err != nil {
